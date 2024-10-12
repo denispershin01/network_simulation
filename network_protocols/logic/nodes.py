@@ -1,3 +1,4 @@
+import random
 from uuid import UUID, uuid4
 
 
@@ -7,8 +8,24 @@ class Node:
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
         self._radius: int = radius
+        self._speed: int = 40
         self._neighbors: list["Node"] = list()
         # TODO: add buffer for storing messages
+
+    @property
+    def oid(self) -> UUID:
+        """Returns the unique id of the current node"""
+        return self._oid
+
+    @property
+    def neighbors(self) -> list["Node"]:
+        """Returns the neighbors of the current node"""
+        return self._neighbors
+
+    @property
+    def coordinates(self) -> tuple[int, int]:
+        """Returns the coordinates of the current node"""
+        return self._pos_x, self._pos_y
 
     def find_neighbors(self, nodes: list["Node"]) -> None:
         """
@@ -31,17 +48,21 @@ class Node:
             if (x - center_x) ** 2 + (y - center_y) ** 2 <= self._radius ** 2:
                 self._neighbors.append(neighbor)
 
-    @property
-    def coordinates(self) -> tuple[int, int]:
-        """Returns the coordinates of the current node"""
-        return self._pos_x, self._pos_y
+    def change_position(self, max_x: int, max_y: int) -> None:
+        """Changes the position of the current node"""
+        self._pos_x += random.randint(-self._speed, self._speed)
+        self._pos_y += random.randint(-self._speed, self._speed)
 
-    @property
-    def neighbors(self) -> list["Node"]:
-        """Returns the neighbors of the current node"""
-        return self._neighbors
+        self._validate_new_position(max_x=max_x, max_y=max_y)
 
-    @property
-    def oid(self) -> UUID:
-        """Returns the unique id of the current node"""
-        return self._oid
+    def _validate_new_position(self, max_x: int, max_y: int) -> None:
+        """Validates the new position of the current node"""
+        if self._pos_x < 0:
+            self._pos_x = 0
+        elif self._pos_x > max_x:
+            self._pos_x = max_x
+
+        if self._pos_y < 0:
+            self._pos_y = 0
+        elif self._pos_y > max_y:
+            self._pos_y = max_y
