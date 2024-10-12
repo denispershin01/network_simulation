@@ -7,7 +7,7 @@ class Node:
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
         self._radius: int = radius
-        self._neighbors: list[UUID] = list()
+        self._neighbors: list["Node"] = list()
         # TODO: add buffer for storing messages
 
     def find_neighbors(self, nodes: list["Node"]) -> None:
@@ -29,7 +29,7 @@ class Node:
             # NOTE: Formula for finding points in the circle radius:
             # (x - center_x)² + (y - center_y)² = radius²
             if (x - center_x) ** 2 + (y - center_y) ** 2 <= self._radius ** 2:
-                self._neighbors.append(neighbor.oid)
+                self._neighbors.append(neighbor)
 
     @property
     def coordinates(self) -> tuple[int, int]:
@@ -37,7 +37,7 @@ class Node:
         return self._pos_x, self._pos_y
 
     @property
-    def neighbors(self) -> list[UUID]:
+    def neighbors(self) -> list["Node"]:
         """Returns the neighbors of the current node"""
         return self._neighbors
 
