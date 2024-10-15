@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 import random
 from uuid import UUID, uuid4
 
+from logic.buffers import BaseBuffer, Queue
+
 
 class BaseNode(ABC):
     @abstractmethod
@@ -36,7 +38,7 @@ class Node(BaseNode):
         self._radius: int = radius
         self._speed: int = 40
         self._neighbors: list[BaseNode] = list()
-        # TODO: add buffer for storing messages
+        self.buffer: BaseBuffer = Queue()
 
     @property
     def oid(self) -> UUID:
