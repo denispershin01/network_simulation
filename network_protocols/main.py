@@ -1,18 +1,12 @@
-from logic.gui import Simulation
-from logic.nodes import Node
+from network_protocols.logic.factories import initialize_nodes
+from network_protocols.logic.gui import FloodSimulation
+from network_protocols.logic.nodes import BaseNode
 
 
 def main() -> None:
-    nodes = [
-        Node(pos_x=10, pos_y=10),
-        Node(pos_x=30, pos_y=10),
-        Node(pos_x=10, pos_y=30),
-        Node(pos_x=30, pos_y=30),
-    ]
-    for node in nodes:
-        node.find_neighbors(nodes)
+    nodes: list[BaseNode] = initialize_nodes(max_nodes=10)
+    simulation = FloodSimulation(nodes=nodes)
 
-    simulation = Simulation(nodes=nodes)
     simulation.start()
 
 
