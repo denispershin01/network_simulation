@@ -32,8 +32,6 @@ cd network_protocols
 
 
 ## Todo
-* implement method for sending messages between nodes and their neighbors
-    * need to go into if message.owner_oid != neighbor.oid fix it
 * write tests for sending method
 * create class for logging network state after each round
     * information can be stored into dictionary with next fields: node_oid, buffer_length, sending_count, getting count

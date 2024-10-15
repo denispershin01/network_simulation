@@ -27,6 +27,7 @@ class FloodSimulation(BaseSimulation):
                     self._is_running = False
 
                 if event.type == pygame.KEYDOWN:
+                    self._send_messages()
                     self._move_nodes()
 
             self._screen.fill("#1F1F1F")
@@ -67,6 +68,11 @@ class FloodSimulation(BaseSimulation):
         for node in self._nodes:
             node.change_position(max_x=800, max_y=600)
             node.find_neighbors(self._nodes)
+
+    def _send_messages(self) -> None:
+        """Sends the messages to the neighbors"""
+        for node in self._nodes:
+            node.send_messages(fpr=10)
 
     def _draw_text_on_center(self, text: str, screen_width: int, y_pos: int) -> None:
         """Draws text on the screen"""

@@ -21,11 +21,11 @@ def initialize_nodes(max_nodes: int) -> list[BaseNode]:
 def initialize_packets(nodes: list[BaseNode], max_packets: int) -> None:
     for node in nodes:
         for _ in range(random.randint(0, max_packets)):
-            node.add_message_to_buffer(
+            node.buffer.put(
                 Message(
                     data=Packet(
                         owner_oid=node.oid,
-                        receivers=node.neighbors,
+                        receivers=[neighbor.oid for neighbor in node.neighbors],
                     ),
                 ),
             )

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import random
 from uuid import UUID, uuid4
 
-from network_protocols.logic.buffers import BaseBuffer, Message, Queue
+from network_protocols.logic.buffers import BaseBuffer, Queue
 
 
 class BaseNode(ABC):
@@ -15,7 +15,7 @@ class BaseNode(ABC):
         ...
 
     @abstractmethod
-    def add_message_to_buffer(self, message: Message) -> None:
+    def send_messages(self, fpr: int) -> None:
         ...
 
     @property
@@ -90,17 +90,17 @@ class Node(BaseNode):
             if (x - center_x) ** 2 + (y - center_y) ** 2 <= self._radius ** 2:
                 self._neighbors.append(neighbor)
 
-    def add_message_to_buffer(self, message: Message) -> None:
-        """Adds the message to the buffer. After adding the message, it clears the receivers list."""
-        receivers = message.packet.receivers
+    def send_messages(self, fpr: int = 5) -> None:
+        """Sends the messages to the neighbors. Fpr is the constraint for the number of messages per round."""
+        for _ in range(fpr):
+            message = self.buffer.pop()
+            if message is None:
+                break
 
-        if receivers:
-            receivers.clear()
-
-        for receiver in self._neighbors:
-            message.packet.receivers.append(receiver.oid)
-
-        self.buffer.put(data=message)
+            for neighbor in self.neighbors:
+                if neighbor.oid != message.packet.owner_oid:
+                    print("From {} to {}".format(message.packet.owner_oid, neighbor.oid))
+                    neighbor.buffer.put(message)
 
     def change_position(self, max_x: int, max_y: int) -> None:
         """Changes the position of the current node"""

@@ -8,10 +8,15 @@ class Packet:
         self._oid: UUID = uuid4()
         self._data: str = "Some data for sending will be here"
         self._owner_oid: UUID = owner_oid
-        self._receivers: list[UUID] = receivers
+
+    @property
+    def owner_oid(self) -> UUID:
+        """Returns the owner of the packet"""
+        return self._owner_oid
 
     @property
     def receivers(self) -> list[UUID]:
+        """Returns the receivers of the packet"""
         return self._receivers
 
 
@@ -60,6 +65,8 @@ class Queue(BaseBuffer):
 
         data = self.head
         self.head = self.head.next
+
+        data.next = None
 
         return data
 
