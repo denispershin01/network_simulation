@@ -1,15 +1,41 @@
+from abc import ABC, abstractmethod
 import random
 from uuid import UUID, uuid4
 
 
-class Node:
-    def __init__(self, pos_x: int, pos_y: int, radius: int = 25) -> None:
+class BaseNode(ABC):
+    @abstractmethod
+    def find_neighbors(self, nodes: list["BaseNode"]) -> None:
+        ...
+
+    @abstractmethod
+    def change_position(self, max_x: int, max_y: int) -> None:
+        ...
+
+    @property
+    @abstractmethod
+    def oid(self) -> UUID:
+        ...
+
+    @property
+    @abstractmethod
+    def neighbors(self) -> list["BaseNode"]:
+        ...
+
+    @property
+    @abstractmethod
+    def coordinates(self) -> tuple[int, int]:
+        ...
+
+
+class Node(BaseNode):
+    def __init__(self, pos_x: int, pos_y: int, radius: int = 100) -> None:
         self._oid: UUID = uuid4()
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
         self._radius: int = radius
         self._speed: int = 40
-        self._neighbors: list["Node"] = list()
+        self._neighbors: list[BaseNode] = list()
         # TODO: add buffer for storing messages
 
     @property
@@ -18,7 +44,7 @@ class Node:
         return self._oid
 
     @property
-    def neighbors(self) -> list["Node"]:
+    def neighbors(self) -> list[BaseNode]:
         """Returns the neighbors of the current node"""
         return self._neighbors
 
@@ -27,7 +53,7 @@ class Node:
         """Returns the coordinates of the current node"""
         return self._pos_x, self._pos_y
 
-    def find_neighbors(self, nodes: list["Node"]) -> None:
+    def find_neighbors(self, nodes: list[BaseNode]) -> None:
         """
         Finds the neighbors of the current node.
         Before finding neighbors, it clears the list of neighbors.
