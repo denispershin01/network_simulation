@@ -5,9 +5,9 @@ from network_protocols.logic.buffers import Message, Packet, Queue
 def test_buffer_length() -> None:
     queue = Queue()
 
-    queue.put(Message(Packet(uuid4(), [uuid4()])))
-    queue.put(Message(Packet(uuid4(), [uuid4()])))
-    queue.put(Message(Packet(uuid4(), [uuid4()])))
+    queue.put(Message(Packet(uuid4())))
+    queue.put(Message(Packet(uuid4())))
+    queue.put(Message(Packet(uuid4())))
 
     assert queue.length == 3
 
@@ -17,10 +17,7 @@ def test_buffer_pop() -> None:
     message_count = 5
     messages = [
         Message(
-            data=Packet(
-                owner_oid=uuid4(),
-                receivers=[uuid4(), uuid4()],
-            )
+            data=Packet(owner_oid=uuid4())
         ) for _ in range(message_count)]
 
     for message in messages:
@@ -35,10 +32,7 @@ def test_buffer_put() -> None:
     message_count = 5
     messages = [
         Message(
-            data=Packet(
-                owner_oid=uuid4(),
-                receivers=[uuid4()],
-            )
+            data=Packet(owner_oid=uuid4())
         ) for _ in range(message_count)]
 
     for message in messages:

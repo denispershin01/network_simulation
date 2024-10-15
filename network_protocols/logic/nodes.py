@@ -93,13 +93,15 @@ class Node(BaseNode):
     def send_messages(self, fpr: int = 5) -> None:
         """Sends the messages to the neighbors. Fpr is the constraint for the number of messages per round."""
         for _ in range(fpr):
+            if not len(self.neighbors):
+                break
+
             message = self.buffer.pop()
             if message is None:
                 break
 
             for neighbor in self.neighbors:
                 if neighbor.oid != message.packet.owner_oid:
-                    print("From {} to {}".format(message.packet.owner_oid, neighbor.oid))
                     neighbor.buffer.put(message)
 
     def change_position(self, max_x: int, max_y: int) -> None:

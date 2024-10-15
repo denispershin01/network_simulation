@@ -1,5 +1,6 @@
 from network_protocols.logic.factories import initialize_packets
 from network_protocols.logic.nodes import Node
+from network_protocols.logic.buffers import Message, Packet
 
 
 def test_coordinates():
@@ -58,7 +59,20 @@ def test_send_messages():
     for node in nodes:
         node.send_messages(fpr=10)
 
-        assert node.buffer.length == 0
-
         if len(node.neighbors):
+            assert node.buffer.length == 0
             assert node.neighbors[0].buffer.length == 5
+
+
+def test_send_messages_without_neighbors():
+    node = Node(pos_x=10, pos_y=10)
+
+    node.buffer.put(
+        data=Message(
+            data=Packet(owner_oid=node.oid),
+        )
+    )
+
+    node.send_messages(fpr=10)
+
+    assert node.buffer.length == 1

@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 
 
 class Packet:
-    def __init__(self, owner_oid: UUID, receivers: list[UUID]):
+    def __init__(self, owner_oid: UUID):
         self._oid: UUID = uuid4()
         self._data: str = "Some data for sending will be here"
         self._owner_oid: UUID = owner_oid
