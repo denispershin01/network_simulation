@@ -44,7 +44,8 @@ class Node(BaseNode):
         self._oid: UUID = uuid4()
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
-        self._radius: int = radius
+        self._energy: int = 1
+        self._radius: int = radius * self._energy
         self._speed: int = 40
         self._neighbors: list[BaseNode] = list()
         self._buffer: BaseBuffer = Queue()
@@ -105,7 +106,9 @@ class Node(BaseNode):
                     neighbor.buffer.put(message)
 
     def change_position(self, max_x: int, max_y: int) -> None:
-        """Changes the position of the current node"""
+        """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
+        self._energy -= 0.1
+
         self._pos_x += random.randint(-self._speed, self._speed)
         self._pos_y += random.randint(-self._speed, self._speed)
 

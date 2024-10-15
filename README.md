@@ -36,4 +36,3 @@ cd network_protocols
     * information can be stored into dictionary with next fields: node_oid, buffer_length, sending_count, getting count
 * create config with constants as separated class
 * implement gateways
-* implement energy logic
