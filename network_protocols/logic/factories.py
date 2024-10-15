@@ -1,13 +1,14 @@
 import random
 from network_protocols.logic.buffers import Message, Packet
 from network_protocols.logic.nodes import BaseNode, Node
+from network_protocols.settings.config import Config
 
 
 def initialize_nodes(max_nodes: int) -> list[BaseNode]:
     nodes = [
         Node(
-            pos_x=random.randint(0, 800),
-            pos_y=random.randint(0, 600),
+            pos_x=random.randint(0, Config.SCREEN_WIDTH),
+            pos_y=random.randint(0, Config.SCREEN_HEIGHT),
             radius=100,
         ) for _ in range(max_nodes)
     ]

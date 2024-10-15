@@ -1,11 +1,12 @@
 from network_protocols.logic.factories import initialize_nodes, initialize_packets
 from network_protocols.logic.gui import FloodSimulation
 from network_protocols.logic.nodes import BaseNode
+from network_protocols.settings.config import Config
 
 
 def main() -> None:
-    nodes: list[BaseNode] = initialize_nodes(max_nodes=10)
-    initialize_packets(nodes=nodes, max_packets=5)
+    nodes: list[BaseNode] = initialize_nodes(max_nodes=Config.MAX_NODES)
+    initialize_packets(nodes=nodes, max_packets=Config.MAX_PACKETS)
 
     simulation = FloodSimulation(nodes=nodes)
     simulation.start()

@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import pygame
 
 from network_protocols.logic.nodes import BaseNode
+from network_protocols.settings.config import Config
 
 
 class BaseSimulation(ABC):
@@ -13,7 +14,9 @@ class BaseSimulation(ABC):
 class FloodSimulation(BaseSimulation):
     def __init__(self, nodes: list[BaseNode]):
         self._nodes: list[BaseNode] = nodes
-        self._screen: pygame.Surface = pygame.display.set_mode((800, 600))
+        self._screen: pygame.Surface = pygame.display.set_mode(
+            size=(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
+        )
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._is_running: bool = True
 
@@ -31,11 +34,11 @@ class FloodSimulation(BaseSimulation):
                     self._move_nodes()
 
             self._screen.fill("#1F1F1F")
-            self._clock.tick(60)
+            self._clock.tick(Config.FPS)
 
             self._draw_text_on_center(
                 text="Press any key to move nodes...",
-                screen_width=800,
+                screen_width=Config.SCREEN_WIDTH,
                 y_pos=25,
             )
             self._draw_nodes()
@@ -72,7 +75,7 @@ class FloodSimulation(BaseSimulation):
     def _send_messages(self) -> None:
         """Sends the messages to the neighbors"""
         for node in self._nodes:
-            node.send_messages(fpr=10)
+            node.send_messages(fpr=Config.FPR)
 
     def _draw_text_on_center(self, text: str, screen_width: int, y_pos: int) -> None:
         """Draws text on the screen"""

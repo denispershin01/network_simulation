@@ -3,6 +3,7 @@ import random
 from uuid import UUID, uuid4
 
 from network_protocols.logic.buffers import BaseBuffer, Queue
+from network_protocols.settings.config import Config
 
 
 class BaseNode(ABC):
@@ -44,9 +45,9 @@ class Node(BaseNode):
         self._oid: UUID = uuid4()
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
-        self._energy: int = 1
+        self._energy: int = Config.NODE_ENERGY
         self._radius: int = radius * self._energy
-        self._speed: int = 40
+        self._speed: int = Config.NODE_SPEED
         self._neighbors: list[BaseNode] = list()
         self._buffer: BaseBuffer = Queue()
 
