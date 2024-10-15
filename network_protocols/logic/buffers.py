@@ -10,11 +10,20 @@ class Packet:
         self._owner_oid: UUID = owner_oid
         self._receivers: list[UUID] = receivers
 
+    @property
+    def receivers(self) -> list[UUID]:
+        return self._receivers
+
 
 class Message:
     def __init__(self, data: Packet):
         self._data: Packet = data
         self.next: Optional["Message"] = None
+
+    @property
+    def packet(self) -> Packet:
+        """Returns the message data (packet)"""
+        return self._data
 
 
 class BaseBuffer(ABC):

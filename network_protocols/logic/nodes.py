@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import random
 from uuid import UUID, uuid4
 
-from network_protocols.logic.buffers import BaseBuffer, Queue
+from network_protocols.logic.buffers import BaseBuffer, Message, Queue
 
 
 class BaseNode(ABC):
@@ -14,6 +14,10 @@ class BaseNode(ABC):
     def change_position(self, max_x: int, max_y: int) -> None:
         ...
 
+    @abstractmethod
+    def add_message_to_buffer(self, message: Message) -> None:
+        ...
+
     @property
     @abstractmethod
     def oid(self) -> UUID:
@@ -22,6 +26,11 @@ class BaseNode(ABC):
     @property
     @abstractmethod
     def neighbors(self) -> list["BaseNode"]:
+        ...
+
+    @property
+    @abstractmethod
+    def buffer(self) -> BaseBuffer:
         ...
 
     @property
@@ -38,7 +47,7 @@ class Node(BaseNode):
         self._radius: int = radius
         self._speed: int = 40
         self._neighbors: list[BaseNode] = list()
-        self.buffer: BaseBuffer = Queue()
+        self._buffer: BaseBuffer = Queue()
 
     @property
     def oid(self) -> UUID:
@@ -49,6 +58,11 @@ class Node(BaseNode):
     def neighbors(self) -> list[BaseNode]:
         """Returns the neighbors of the current node"""
         return self._neighbors
+
+    @property
+    def buffer(self) -> BaseBuffer:
+        """Returns the buffer of the current node"""
+        return self._buffer
 
     @property
     def coordinates(self) -> tuple[int, int]:
@@ -75,6 +89,18 @@ class Node(BaseNode):
             # (x - center_x)² + (y - center_y)² = radius²
             if (x - center_x) ** 2 + (y - center_y) ** 2 <= self._radius ** 2:
                 self._neighbors.append(neighbor)
+
+    def add_message_to_buffer(self, message: Message) -> None:
+        """Adds the message to the buffer. After adding the message, it clears the receivers list."""
+        receivers = message.packet.receivers
+
+        if receivers:
+            receivers.clear()
+
+        for receiver in self._neighbors:
+            message.packet.receivers.append(receiver.oid)
+
+        self.buffer.put(data=message)
 
     def change_position(self, max_x: int, max_y: int) -> None:
         """Changes the position of the current node"""
