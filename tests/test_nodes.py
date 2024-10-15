@@ -15,7 +15,7 @@ def test_non_neighbors():
 
 
 def test_find_neighbors():
-    node = Node(pos_x=10, pos_y=10)
+    node = Node(pos_x=10, pos_y=10, radius=25)
     nodes = [
         Node(pos_x=0, pos_y=10),
         Node(pos_x=10, pos_y=0),
