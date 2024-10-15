@@ -17,6 +17,11 @@ class BaseBuffer(ABC):
     def pop(self) -> Optional[Message]:
         ...
 
+    @property
+    @abstractmethod
+    def length(self) -> int:
+        ...
+
 
 class Queue(BaseBuffer):
     def __init__(self):
@@ -39,3 +44,17 @@ class Queue(BaseBuffer):
         self.head = self.head.next
 
         return data
+
+    @property
+    def length(self) -> int:
+        if self.head is None:
+            return 0
+
+        length = 1
+        current = self.head
+
+        while current.next is not None:
+            length += 1
+            current = current.next
+
+        return length

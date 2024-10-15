@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 
-from logic.nodes import BaseNode
+from network_protocols.logic.nodes import BaseNode
 
 
 class BaseSimulation(ABC):

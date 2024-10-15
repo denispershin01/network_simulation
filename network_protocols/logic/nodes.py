@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import random
 from uuid import UUID, uuid4
 
-from logic.buffers import BaseBuffer, Queue
+from network_protocols.logic.buffers import BaseBuffer, Queue
 
 
 class BaseNode(ABC):
