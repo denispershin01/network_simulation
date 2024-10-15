@@ -1,3 +1,4 @@
+from network_protocols.logic.factories import initialize_nodes
 from network_protocols.logic.nodes import Node
 
 
@@ -41,3 +42,9 @@ def test_clear_neighbors():
     node.find_neighbors([])
 
     assert len(node.neighbors) == 0
+
+
+def test_nodes_factory():
+    nodes = initialize_nodes(max_nodes=10)
+
+    assert len(nodes) == 10
