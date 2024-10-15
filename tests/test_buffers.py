@@ -1,12 +1,13 @@
-from network_protocols.logic.buffers import Message, Queue
+from uuid import uuid4
+from network_protocols.logic.buffers import Message, Packet, Queue
 
 
 def test_buffer_length() -> None:
     queue = Queue()
 
-    queue.put(Message("1"))
-    queue.put(Message("2"))
-    queue.put(Message("3"))
+    queue.put(Message(Packet(uuid4(), [uuid4()])))
+    queue.put(Message(Packet(uuid4(), [uuid4()])))
+    queue.put(Message(Packet(uuid4(), [uuid4()])))
 
     assert queue.length == 3
 
@@ -14,7 +15,13 @@ def test_buffer_length() -> None:
 def test_buffer_pop() -> None:
     queue = Queue()
     message_count = 5
-    messages = [Message(str(i)) for i in range(message_count)]
+    messages = [
+        Message(
+            data=Packet(
+                owner_oid=uuid4(),
+                receivers=[uuid4(), uuid4()],
+            )
+        ) for _ in range(message_count)]
 
     for message in messages:
         queue.put(message)
@@ -26,7 +33,13 @@ def test_buffer_pop() -> None:
 def test_buffer_put() -> None:
     queue = Queue()
     message_count = 5
-    messages = [Message(str(i)) for i in range(message_count)]
+    messages = [
+        Message(
+            data=Packet(
+                owner_oid=uuid4(),
+                receivers=[uuid4()],
+            )
+        ) for _ in range(message_count)]
 
     for message in messages:
         queue.put(message)

@@ -1,10 +1,19 @@
 from abc import ABC, abstractmethod
 from typing import Optional
+from uuid import UUID, uuid4
+
+
+class Packet:
+    def __init__(self, owner_oid: UUID, receivers: list[UUID]):
+        self._oid: UUID = uuid4()
+        self._data: str = "Some data for sending will be here"
+        self._owner_oid: UUID = owner_oid
+        self._receivers: list[UUID] = receivers
 
 
 class Message:
-    def __init__(self, data: str):
-        self._data: str = data
+    def __init__(self, data: Packet):
+        self._data: Packet = data
         self.next: Optional["Message"] = None
 
 
