@@ -1,3 +1,4 @@
+from network_protocols.logic.factories import initialize_packets
 from network_protocols.logic.nodes import Node
 
 
@@ -41,3 +42,23 @@ def test_clear_neighbors():
     node.find_neighbors([])
 
     assert len(node.neighbors) == 0
+
+
+def test_send_messages():
+    nodes = [
+        Node(pos_x=10, pos_y=10),
+        Node(pos_x=0, pos_y=10),
+        Node(pos_x=10, pos_y=0),
+        Node(pos_x=35, pos_y=20),
+        Node(pos_x=10, pos_y=-10),
+    ]
+
+    initialize_packets(nodes=nodes, max_packets=5)
+
+    for node in nodes:
+        node.send_messages(fpr=10)
+
+        assert node.buffer.length == 0
+
+        if len(node.neighbors):
+            assert node.neighbors[0].buffer.length == 5

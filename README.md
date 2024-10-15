@@ -32,7 +32,8 @@ cd network_protocols
 
 
 ## Todo
-* write tests for sending method
 * create class for logging network state after each round
     * information can be stored into dictionary with next fields: node_oid, buffer_length, sending_count, getting count
 * create config with constants as separated class
+* implement gateways
+* implement energy logic
