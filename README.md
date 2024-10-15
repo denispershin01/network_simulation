@@ -32,6 +32,4 @@ cd network_protocols
 
 
 ## Todo
-* create class for logging network state after each round
-    * information can be stored into dictionary with next fields: node_oid, buffer_length, sending_count, getting count
 * implement gateways

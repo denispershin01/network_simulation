@@ -1,9 +1,14 @@
 from abc import ABC, abstractmethod
+import logging
 import random
 from uuid import UUID, uuid4
 
 from network_protocols.logic.buffers import BaseBuffer, Queue
 from network_protocols.settings.config import Config
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 
 class BaseNode(ABC):
@@ -105,6 +110,8 @@ class Node(BaseNode):
             for neighbor in self.neighbors:
                 if neighbor.oid != message.packet.owner_oid:
                     neighbor.buffer.put(message)
+
+        logger.info("Buffer length for node %s after sending: %s\n", self.oid, self.buffer.length)
 
     def change_position(self, max_x: int, max_y: int) -> None:
         """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
