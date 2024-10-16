@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 
-from network_protocols.logic.nodes.base import BaseNode
+from network_protocols.logic.nodes.base import BaseNode, BaseNodeProps
 from network_protocols.settings.config import Config
 
 
@@ -12,8 +12,8 @@ class BaseSimulation(ABC):
 
 
 class FloodSimulation(BaseSimulation):
-    def __init__(self, nodes: list[BaseNode]):
-        self._nodes: list[BaseNode] = nodes
+    def __init__(self, nodes: list[BaseNodeProps]):
+        self._nodes: list[BaseNodeProps] = nodes
         self._screen: pygame.Surface = pygame.display.set_mode(
             size=(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
         )
@@ -30,8 +30,13 @@ class FloodSimulation(BaseSimulation):
                     self._is_running = False
 
                 if event.type == pygame.KEYDOWN:
-                    self._send_messages()
-                    self._move_nodes()
+                    for node in self._nodes:
+                        if isinstance(node, BaseNode):
+                            node.change_position(max_x=800, max_y=600)
+                            node.find_neighbors(self._nodes)
+                            node.send_messages(fpr=Config.FPR)
+                        else:
+                            node.clear_buffer()
 
             self._screen.fill("#1F1F1F")
             self._clock.tick(Config.FPS)
@@ -50,9 +55,11 @@ class FloodSimulation(BaseSimulation):
     def _draw_nodes(self) -> None:
         """Draws the nodes and lines between neighbors"""
         for node in self._nodes:
+            color = (255, 255, 255) if isinstance(node, BaseNode) else (255, 0, 0)
+
             pygame.draw.circle(
                 surface=self._screen,
-                color=(255, 255, 255),
+                color=color,
                 center=node.coordinates,
                 radius=6,
             )
@@ -60,22 +67,11 @@ class FloodSimulation(BaseSimulation):
             for neighbor in node.neighbors:
                 pygame.draw.line(
                     surface=self._screen,
-                    color=(255, 255, 255),
+                    color=color,
                     start_pos=node.coordinates,
                     end_pos=neighbor.coordinates,
                     width=2,
                 )
-
-    def _move_nodes(self) -> None:
-        """Move each node to their new position"""
-        for node in self._nodes:
-            node.change_position(max_x=800, max_y=600)
-            node.find_neighbors(self._nodes)
-
-    def _send_messages(self) -> None:
-        """Sends the messages to the neighbors"""
-        for node in self._nodes:
-            node.send_messages(fpr=Config.FPR)
 
     def _draw_text_on_center(self, text: str, screen_width: int, y_pos: int) -> None:
         """Draws text on the screen"""

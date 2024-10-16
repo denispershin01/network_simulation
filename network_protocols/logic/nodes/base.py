@@ -58,7 +58,7 @@ class BaseNode(BaseNodeProps):
         ...
 
 
-class BaseGatewey(BaseNodeProps):
+class BaseGateway(BaseNodeProps):
     @abstractmethod
     def clear_buffer(self) -> None:
         ...

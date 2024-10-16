@@ -1,7 +1,7 @@
-from network_protocols.logic.nodes.base import BaseGatewey, BaseNodeProps
+from network_protocols.logic.nodes.base import BaseGateway, BaseNodeProps
 
 
-class Gatewey(BaseGatewey):
+class Gateway(BaseGateway):
     def find_neighbors(self, nodes: list[BaseNodeProps]) -> None:
         """
         Finds the neighbors of the current node.
