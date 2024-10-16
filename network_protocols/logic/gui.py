@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 
-from network_protocols.logic.nodes import BaseNode
+from network_protocols.logic.nodes.base import BaseNode
 from network_protocols.settings.config import Config
 
 

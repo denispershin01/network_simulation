@@ -1,6 +1,7 @@
 import random
 from network_protocols.logic.buffers import Message, Packet
-from network_protocols.logic.nodes import BaseNode, Node
+from network_protocols.logic.nodes.base import BaseNode
+from network_protocols.logic.nodes.node import Node
 from network_protocols.settings.config import Config
 
 

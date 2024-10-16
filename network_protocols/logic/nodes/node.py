@@ -1,48 +1,14 @@
-from abc import ABC, abstractmethod
 import logging
 import random
 from uuid import UUID, uuid4
 
 from network_protocols.logic.buffers import BaseBuffer, Queue
+from network_protocols.logic.nodes.base import BaseNode
 from network_protocols.settings.config import Config
 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-
-
-class BaseNode(ABC):
-    @abstractmethod
-    def find_neighbors(self, nodes: list["BaseNode"]) -> None:
-        ...
-
-    @abstractmethod
-    def change_position(self, max_x: int, max_y: int) -> None:
-        ...
-
-    @abstractmethod
-    def send_messages(self, fpr: int) -> None:
-        ...
-
-    @property
-    @abstractmethod
-    def oid(self) -> UUID:
-        ...
-
-    @property
-    @abstractmethod
-    def neighbors(self) -> list["BaseNode"]:
-        ...
-
-    @property
-    @abstractmethod
-    def buffer(self) -> BaseBuffer:
-        ...
-
-    @property
-    @abstractmethod
-    def coordinates(self) -> tuple[int, int]:
-        ...
 
 
 class Node(BaseNode):
