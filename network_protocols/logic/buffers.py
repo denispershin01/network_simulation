@@ -40,6 +40,10 @@ class BaseBuffer(ABC):
     def pop(self) -> Optional[Message]:
         ...
 
+    @abstractmethod
+    def clear(self) -> None:
+        ...
+
     @property
     @abstractmethod
     def length(self) -> int:
@@ -69,6 +73,11 @@ class Queue(BaseBuffer):
         data.next = None
 
         return data
+
+    def clear(self) -> None:
+        """Clears the buffer"""
+        self.head = None
+        self.tail = None
 
     @property
     def length(self) -> int:
