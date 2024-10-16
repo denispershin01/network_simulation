@@ -29,7 +29,3 @@ cd network_protocols
 * `make app` - up application
 
 * `make test` - run tests
-
-
-## Todo
-* implement gateways
