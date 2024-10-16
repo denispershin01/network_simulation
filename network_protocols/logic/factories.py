@@ -1,6 +1,6 @@
 import random
 from network_protocols.logic.buffers import Message, Packet
-from network_protocols.logic.nodes.base import BaseNode, BaseNodeProps
+from network_protocols.logic.nodes.base import BaseGateway, BaseNode, BaseNodeProps
 from network_protocols.logic.nodes.gateway import Gateway
 from network_protocols.logic.nodes.node import Node
 from network_protocols.settings.config import Config
@@ -30,6 +30,9 @@ def initialize_nodes(max_nodes_count: int, gateways_count: int) -> list[BaseNode
 
 def initialize_packets(nodes: list[BaseNode], max_packets: int) -> None:
     for node in nodes:
+        if isinstance(node, BaseGateway):
+            continue
+
         for _ in range(random.randint(0, max_packets)):
             node.buffer.put(
                 Message(
