@@ -6,7 +6,7 @@ from network_protocols.settings.config import Config
 
 
 class BaseNodeProps(ABC):
-    def __init__(self, pos_x: int, pos_y: int, radius: int = 100) -> None:
+    def __init__(self, pos_x: int, pos_y: int, radius: int = Config.NODE_RADIUS) -> None:
         self._oid: UUID = uuid4()
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y

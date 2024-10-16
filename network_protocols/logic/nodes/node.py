@@ -2,6 +2,7 @@ import logging
 import random
 
 from network_protocols.logic.nodes.base import BaseNode, BaseNodeProps
+from network_protocols.settings.config import Config
 
 
 logger = logging.getLogger(__name__)
@@ -48,7 +49,12 @@ class Node(BaseNode):
 
     def change_position(self, max_x: int, max_y: int) -> None:
         """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
-        self._energy -= 0.1
+        self._energy -= 0.01
+
+        if self._energy <= 0:
+            self._energy = 0
+
+        self._radius = self._energy * Config.NODE_RADIUS
 
         self._pos_x += random.randint(-self._speed, self._speed)
         self._pos_y += random.randint(-self._speed, self._speed)
