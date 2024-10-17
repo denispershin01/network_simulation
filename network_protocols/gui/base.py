@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 import pygame
 
 from network_protocols.nodes.base import BaseNode, BaseNodeProps
@@ -6,12 +7,6 @@ from network_protocols.settings.config import Config
 
 
 class BaseSimulation(ABC):
-    @abstractmethod
-    def start(self) -> None:
-        ...
-
-
-class FloodSimulation(BaseSimulation):
     def __init__(self, nodes: list[BaseNodeProps]):
         self._nodes: list[BaseNodeProps] = nodes
         self._screen: pygame.Surface = pygame.display.set_mode(
@@ -20,37 +15,9 @@ class FloodSimulation(BaseSimulation):
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._is_running: bool = True
 
+    @abstractmethod
     def start(self) -> None:
-        """Starts the network simulation"""
-        pygame.init()
-
-        while self._is_running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self._is_running = False
-
-                if event.type == pygame.KEYDOWN:
-                    for node in self._nodes:
-                        if isinstance(node, BaseNode):
-                            node.change_position(max_x=800, max_y=600)
-                            node.find_neighbors(self._nodes)
-                            node.send_messages(fpr=Config.FPR)
-                        else:
-                            node.clear_buffer()
-
-            self._screen.fill("#1F1F1F")
-            self._clock.tick(Config.FPS)
-
-            self._draw_text_on_center(
-                text="Press any key to move nodes...",
-                screen_width=Config.SCREEN_WIDTH,
-                y_pos=25,
-            )
-            self._draw_nodes()
-
-            pygame.display.flip()
-
-        pygame.quit()
+        ...
 
     def _draw_nodes(self) -> None:
         """Draws the nodes and lines between neighbors"""
