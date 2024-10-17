@@ -1,4 +1,4 @@
-from network_protocols.logic.factories import initialize_nodes, initialize_packets
+from network_protocols.utils.factories import initialize_nodes, initialize_packets
 from network_protocols.nodes.base import BaseGateway
 
 
