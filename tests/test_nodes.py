@@ -1,5 +1,5 @@
 from network_protocols.logic.factories import initialize_packets
-from network_protocols.logic.nodes.node import Node
+from network_protocols.nodes.node import Node
 from network_protocols.logic.buffers import Message, Packet
 
 

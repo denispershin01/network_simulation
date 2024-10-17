@@ -1,4 +1,4 @@
-from network_protocols.logic.nodes.base import BaseGateway, BaseNodeProps
+from network_protocols.nodes.base import BaseGateway, BaseNodeProps
 
 
 class Gateway(BaseGateway):

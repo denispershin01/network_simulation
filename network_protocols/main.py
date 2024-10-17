@@ -1,6 +1,6 @@
 from network_protocols.logic.factories import initialize_nodes, initialize_packets
 from network_protocols.logic.gui import FloodSimulation
-from network_protocols.logic.nodes.base import BaseNode
+from network_protocols.nodes.base import BaseNode
 from network_protocols.settings.config import Config
 
 

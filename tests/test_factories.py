@@ -1,5 +1,5 @@
 from network_protocols.logic.factories import initialize_nodes, initialize_packets
-from network_protocols.logic.nodes.base import BaseGateway
+from network_protocols.nodes.base import BaseGateway
 
 
 def test_nodes_factory_with_gateways():

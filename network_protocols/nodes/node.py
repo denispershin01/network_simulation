@@ -1,7 +1,7 @@
 import logging
 import random
 
-from network_protocols.logic.nodes.base import BaseNode, BaseNodeProps
+from network_protocols.nodes.base import BaseNode, BaseNodeProps
 from network_protocols.settings.config import Config
 
 
