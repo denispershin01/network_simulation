@@ -50,6 +50,7 @@ class Node(BaseNode):
 
         if self._energy <= 0:
             self._energy = 0
+            return
 
         self._radius = self._energy * Config.NODE_RADIUS
 
