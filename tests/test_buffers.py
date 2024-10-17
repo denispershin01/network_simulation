@@ -1,5 +1,6 @@
 from uuid import uuid4
-from network_protocols.logic.buffers import Message, Packet, Queue
+from network_protocols.buffers.messages import Message, Packet
+from network_protocols.buffers.queue import Queue
 
 
 def test_buffer_length() -> None:

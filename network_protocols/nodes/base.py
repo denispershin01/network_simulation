@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from uuid import UUID, uuid4
 
-from network_protocols.logic.buffers import BaseBuffer, Queue
+from network_protocols.buffers.base import BaseBuffer
+from network_protocols.buffers.queue import Queue
 from network_protocols.settings.config import Config
 
 

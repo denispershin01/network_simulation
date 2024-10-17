@@ -1,5 +1,5 @@
 import random
-from network_protocols.logic.buffers import Message, Packet
+from network_protocols.buffers.messages import Message, Packet
 from network_protocols.nodes.base import BaseGateway, BaseNode, BaseNodeProps
 from network_protocols.nodes.node import Node
 from network_protocols.nodes.gateway import Gateway
