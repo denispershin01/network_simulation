@@ -13,9 +13,6 @@ class Node(BaseNode):
     def send_messages(self, fpr: int = 5) -> None:
         """Sends the messages to the neighbors. Fpr is the constraint for the number of messages per round."""
         for _ in range(fpr):
-            if not len(self.neighbors):
-                break
-
             message = self.buffer.pop()
             if message is None:
                 break
