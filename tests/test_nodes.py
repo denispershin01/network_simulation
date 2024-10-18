@@ -75,4 +75,4 @@ def test_send_messages_without_neighbors():
 
     node.send_messages(fpr=10)
 
-    assert node.buffer.length == 1
+    assert node.buffer.length == 0

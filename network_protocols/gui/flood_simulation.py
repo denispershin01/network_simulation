@@ -22,6 +22,7 @@ class FloodSimulation(BaseSimulation):
                             node.find_neighbors(self._nodes)
                             node.send_messages(fpr=Config.FPR)
                         else:
+                            node.find_neighbors(self._nodes)
                             node.clear_buffer()
 
             self._screen.fill("#1F1F1F")
