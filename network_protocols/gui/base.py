@@ -14,6 +14,9 @@ class BaseSimulation(ABC):
         )
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._is_running: bool = True
+        self._node_color: tuple[int, int, int] = (255, 255, 255)
+        self._gateway_color: tuple[int, int, int] = (255, 0, 0)
+        self._line_color: tuple[int, int, int] = (255, 255, 255)
 
     @abstractmethod
     def start(self) -> None:
@@ -22,7 +25,10 @@ class BaseSimulation(ABC):
     def _draw_nodes(self) -> None:
         """Draws the nodes and lines between neighbors"""
         for node in self._nodes:
-            color = (255, 255, 255) if isinstance(node, BaseNode) else (255, 0, 0)
+            if isinstance(node, BaseNode):
+                color = self._node_color
+            else:
+                color = self._gateway_color
 
             pygame.draw.circle(
                 surface=self._screen,
@@ -34,7 +40,7 @@ class BaseSimulation(ABC):
             for neighbor in node.neighbors:
                 pygame.draw.line(
                     surface=self._screen,
-                    color=color,
+                    color=self._line_color,
                     start_pos=node.coordinates,
                     end_pos=neighbor.coordinates,
                     width=2,
