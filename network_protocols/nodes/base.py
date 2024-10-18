@@ -12,7 +12,7 @@ class BaseNodeProps(ABC):
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
         self._radius: int = radius
-        self._neighbors: list[BaseNode] = list()
+        self._neighbors: list["BaseNodeProps"] = list()
         self._buffer: BaseBuffer = Queue()
 
     @property
@@ -35,6 +35,7 @@ class BaseNodeProps(ABC):
         """Returns the coordinates of the current node"""
         return self._pos_x, self._pos_y
 
+    @abstractmethod
     def find_neighbors(self, nodes: list["BaseNodeProps"]) -> None:
         ...
 
