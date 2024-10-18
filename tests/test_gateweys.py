@@ -1,4 +1,4 @@
-from network_protocols.nodes.gateway import Gateway
+from network_protocols.nodes.flood.gateway import Gateway
 
 
 def test_non_neighbors():

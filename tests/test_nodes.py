@@ -1,5 +1,5 @@
 from network_protocols.utils.factories import initialize_packets
-from network_protocols.nodes.node import Node
+from network_protocols.nodes.flood.node import Node
 from network_protocols.buffers.messages import Message, Packet
 
 
