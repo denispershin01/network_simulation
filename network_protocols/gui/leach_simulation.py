@@ -1,7 +1,7 @@
 import pygame
 
 from network_protocols.gui.base import BaseSimulation
-from network_protocols.nodes.base import BaseNode, BaseNodeProps, BaseStation
+from network_protocols.nodes.base import BaseLeachNode, BaseNodeProps, BaseLeachStation
 from network_protocols.settings.config import Config
 
 
@@ -22,11 +22,13 @@ class LeachSimulation(BaseSimulation):
 
                 if event.type == pygame.KEYDOWN:
                     for node in self._nodes:
-                        if isinstance(node, BaseNode):
-                            node.change_position(max_x=800, max_y=600)
+                        if isinstance(node, BaseLeachNode):
+                            node.change_position(max_x=Config.SCREEN_WIDTH, max_y=Config.SCREEN_HEIGHT)
+                        # TODO: expression for cluster head (receive messages)
+                        elif isinstance(node, BaseLeachNode) and node.is_cluster_head:
                             node.find_neighbors(self._nodes)
-                            node.send_messages(fpr=Config.FPR)
-                        elif isinstance(node, BaseStation):
+                            node.receive_messages()
+                        elif isinstance(node, BaseLeachStation):
                             node.find_neighbors(self._nodes)
                             node.clear_buffer()
 
@@ -66,9 +68,11 @@ class LeachSimulation(BaseSimulation):
     def _draw_nodes(self) -> None:
         """Draws the nodes and lines between neighbors"""
         for node in self._nodes:
-            if isinstance(node, BaseNode):
+            if isinstance(node, BaseLeachNode) and not node.is_cluster_head:
                 color = self._node_color
-            elif isinstance(node, BaseStation):
+            elif isinstance(node, BaseLeachNode) and node.is_cluster_head:
+                color = self._gateway_color
+            elif isinstance(node, BaseLeachStation):
                 color = self._station_color
 
             pygame.draw.circle(

@@ -11,7 +11,9 @@ class BaseNodeProps(ABC):
         self._oid: UUID = uuid4()
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
-        self._radius: int = radius
+        self._speed: int = Config.NODE_SPEED
+        self._energy: int = Config.NODE_ENERGY
+        self._radius: int = radius * self._energy
         self._neighbors: list["BaseNodeProps"] = list()
         self._buffer: BaseBuffer = Queue()
 
@@ -40,17 +42,7 @@ class BaseNodeProps(ABC):
         ...
 
 
-class BaseNode(BaseNodeProps):
-    def __init__(self, pos_x: int, pos_y: int, radius: int = 100) -> None:
-        self._speed: int = Config.NODE_SPEED
-        self._energy: int = Config.NODE_ENERGY
-
-        super().__init__(
-            pos_x=pos_x,
-            pos_y=pos_y,
-            radius=radius * self._energy,
-        )
-
+class BaseFloodNode(BaseNodeProps):
     @abstractmethod
     def change_position(self, max_x: int, max_y: int) -> None:
         ...
@@ -60,13 +52,36 @@ class BaseNode(BaseNodeProps):
         ...
 
 
-class BaseGateway(BaseNodeProps):
+class BaseFloodGateway(BaseNodeProps):
     @abstractmethod
     def clear_buffer(self) -> None:
         ...
 
 
-class BaseStation(BaseNodeProps):
+class BaseLeachNode(BaseNodeProps):
+    def __init__(self, pos_x: int, pos_y: int, radius: int = Config.NODE_RADIUS) -> None:
+        super().__init__(pos_x, pos_y, radius)
+        self._is_cluster_head: bool = False
+
+    @property
+    def is_cluster_head(self) -> bool:
+        """Returns True if the current node is cluster head. Else returns False"""
+        return self._is_cluster_head
+
+    @is_cluster_head.setter
+    def is_cluster_head(self, value: bool) -> None:
+        self._is_cluster_head = value
+
+    @abstractmethod
+    def change_position(self, max_x: int, max_y: int) -> None:
+        ...
+
+    @abstractmethod
+    def receive_messages(self) -> None:
+        ...
+
+
+class BaseLeachStation(BaseNodeProps):
     @abstractmethod
     def clear_buffer(self) -> None:
         ...

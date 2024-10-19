@@ -1,7 +1,7 @@
 import logging
 import random
 
-from network_protocols.nodes.base import BaseNode, BaseNodeProps
+from network_protocols.nodes.base import BaseFloodNode, BaseNodeProps
 from network_protocols.settings.config import Config
 
 
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 
-class FloodNode(BaseNode):
+class FloodNode(BaseFloodNode):
     def send_messages(self, fpr: int = 5) -> None:
         """Sends the messages to the neighbors. Fpr is the constraint for the number of messages per round."""
         for _ in range(fpr):

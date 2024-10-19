@@ -1,28 +1,28 @@
-from network_protocols.utils.factories import initialize_packets
-from network_protocols.nodes.flood.node import Node
+from network_protocols.utils.factories import _initialize_packets
+from network_protocols.nodes.flood.node import FloodNode
 from network_protocols.buffers.messages import Message, Packet
 
 
 def test_coordinates():
-    node = Node(pos_x=10, pos_y=10)
+    node = FloodNode(pos_x=10, pos_y=10)
 
     assert node.coordinates == (10, 10)
 
 
 def test_non_neighbors():
-    node = Node(pos_x=10, pos_y=10)
+    node = FloodNode(pos_x=10, pos_y=10)
     node.find_neighbors([])
 
     assert len(node.neighbors) == 0
 
 
 def test_find_neighbors():
-    node = Node(pos_x=10, pos_y=10, radius=25)
+    node = FloodNode(pos_x=10, pos_y=10, radius=25)
     nodes = [
-        Node(pos_x=0, pos_y=10),
-        Node(pos_x=10, pos_y=0),
-        Node(pos_x=35, pos_y=20),
-        Node(pos_x=10, pos_y=-10),
+        FloodNode(pos_x=0, pos_y=10),
+        FloodNode(pos_x=10, pos_y=0),
+        FloodNode(pos_x=35, pos_y=20),
+        FloodNode(pos_x=10, pos_y=-10),
     ]
 
     node.find_neighbors(nodes)
@@ -31,12 +31,12 @@ def test_find_neighbors():
 
 
 def test_clear_neighbors():
-    node = Node(pos_x=10, pos_y=10)
+    node = FloodNode(pos_x=10, pos_y=10)
     neighbors = [
-        Node(pos_x=0, pos_y=10),
-        Node(pos_x=10, pos_y=0),
-        Node(pos_x=35, pos_y=20),
-        Node(pos_x=10, pos_y=-10),
+        FloodNode(pos_x=0, pos_y=10),
+        FloodNode(pos_x=10, pos_y=0),
+        FloodNode(pos_x=35, pos_y=20),
+        FloodNode(pos_x=10, pos_y=-10),
     ]
 
     node.find_neighbors(neighbors)
@@ -47,14 +47,14 @@ def test_clear_neighbors():
 
 def test_send_messages():
     nodes = [
-        Node(pos_x=10, pos_y=10),
-        Node(pos_x=0, pos_y=10),
-        Node(pos_x=10, pos_y=0),
-        Node(pos_x=35, pos_y=20),
-        Node(pos_x=10, pos_y=-10),
+        FloodNode(pos_x=10, pos_y=10),
+        FloodNode(pos_x=0, pos_y=10),
+        FloodNode(pos_x=10, pos_y=0),
+        FloodNode(pos_x=35, pos_y=20),
+        FloodNode(pos_x=10, pos_y=-10),
     ]
 
-    initialize_packets(nodes=nodes, max_packets=5)
+    _initialize_packets(nodes=nodes, max_packets=5)
 
     for node in nodes:
         node.send_messages(fpr=10)
@@ -65,7 +65,7 @@ def test_send_messages():
 
 
 def test_send_messages_without_neighbors():
-    node = Node(pos_x=10, pos_y=10)
+    node = FloodNode(pos_x=10, pos_y=10)
 
     node.buffer.put(
         data=Message(

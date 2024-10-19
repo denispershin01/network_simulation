@@ -1,8 +1,9 @@
 import random
 from network_protocols.buffers.messages import Message, Packet
-from network_protocols.nodes.base import BaseGateway, BaseNode, BaseNodeProps, BaseStation
+from network_protocols.nodes.base import BaseFloodGateway, BaseFloodNode, BaseNodeProps, BaseLeachStation
 from network_protocols.nodes.flood.node import FloodNode
 from network_protocols.nodes.flood.gateway import FloodGateway
+from network_protocols.nodes.leach.node import LeachNode
 from network_protocols.nodes.leach.station import LeachStation
 from network_protocols.settings.config import Config
 
@@ -32,18 +33,36 @@ def flood_initializer(max_nodes_count: int, gateways_count: int, max_packets: in
 
 
 def leach_initializer(max_nodes_count: int, gateways_count: int, max_packets: int) -> list[BaseNodeProps]:
-    nodes = [LeachStation(
-        pos_x=Config.SCREEN_WIDTH // 2,
-        pos_y=Config.SCREEN_HEIGHT // 2,
-        radius=Config.STATION_RADIUS,
-    )]
+    # TODO: rework this
+    nodes = [
+        LeachNode(
+            pos_x=random.randint(0, Config.SCREEN_WIDTH),
+            pos_y=random.randint(0, Config.SCREEN_HEIGHT),
+            radius=100,
+        ) for _ in range(3)
+    ]
+
+    nodes[1].is_cluster_head = True
+
+    nodes.append(
+        LeachStation(
+            pos_x=Config.SCREEN_WIDTH // 2,
+            pos_y=Config.SCREEN_HEIGHT // 2,
+            radius=Config.STATION_RADIUS,
+        )
+    )
+
+    for node in nodes:
+        node.find_neighbors(nodes=nodes)
+
+    _initialize_packets(nodes=nodes, max_packets=max_packets)
 
     return nodes
 
 
-def _initialize_packets(nodes: list[BaseNode], max_packets: int) -> None:
+def _initialize_packets(nodes: list[BaseFloodNode], max_packets: int) -> None:
     for node in nodes:
-        if isinstance(node, BaseGateway) or isinstance(node, BaseStation):
+        if isinstance(node, BaseFloodGateway) or isinstance(node, BaseLeachStation):
             continue
 
         for _ in range(random.randint(0, max_packets)):

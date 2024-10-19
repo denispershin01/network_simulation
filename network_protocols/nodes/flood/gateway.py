@@ -1,7 +1,7 @@
-from network_protocols.nodes.base import BaseGateway, BaseNodeProps
+from network_protocols.nodes.base import BaseFloodGateway, BaseNodeProps
 
 
-class FloodGateway(BaseGateway):
+class FloodGateway(BaseFloodGateway):
     def find_neighbors(self, nodes: list[BaseNodeProps]) -> None:
         """
         Finds the neighbors of the current node.

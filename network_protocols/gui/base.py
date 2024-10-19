@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import pygame
 
-from network_protocols.nodes.base import BaseNode, BaseNodeProps
+from network_protocols.nodes.base import BaseFloodNode, BaseNodeProps
 from network_protocols.settings.config import Config
 
 
@@ -25,7 +25,7 @@ class BaseSimulation(ABC):
     def _draw_nodes(self) -> None:
         """Draws the nodes and lines between neighbors"""
         for node in self._nodes:
-            if isinstance(node, BaseNode):
+            if isinstance(node, BaseFloodNode):
                 color = self._node_color
             else:
                 color = self._gateway_color

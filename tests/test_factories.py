@@ -1,5 +1,5 @@
 from network_protocols.utils.factories import flood_initializer
-from network_protocols.nodes.base import BaseGateway
+from network_protocols.nodes.base import BaseFloodGateway
 
 
 def test_flood_initializer():
@@ -8,7 +8,7 @@ def test_flood_initializer():
     assert len(nodes) == 12
 
     for node in nodes:
-        if isinstance(node, BaseGateway):
+        if isinstance(node, BaseFloodGateway):
             assert node.buffer.length == 0
 
         assert node.buffer.length >= 0 or node.buffer.length <= 5
@@ -20,7 +20,7 @@ def test_flood_initializer_without_gateways():
     assert len(nodes) == 10
 
     for node in nodes:
-        if isinstance(node, BaseGateway):
+        if isinstance(node, BaseFloodGateway):
             assert node.buffer.length == 0
 
         assert node.buffer.length >= 0 or node.buffer.length <= 5
