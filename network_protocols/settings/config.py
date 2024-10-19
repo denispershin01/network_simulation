@@ -12,3 +12,4 @@ class Config:
     NODE_SPEED: Final[int] = 40
     NODE_ENERGY: Final[int] = 1
     NODE_RADIUS: Final[int] = 100
+    STATION_RADIUS: Final[int] = 800
