@@ -26,7 +26,7 @@ class LeachStation(BaseLeachStation):
 
                 self.buffer.put(message)
 
-            logger.info("Buffer length for cluster head %s after receiving: %s\n", node.oid, node.buffer.length)
+            logger.info("Buffer length for node %s: %s\n", node.oid, node.buffer.length)
 
         self.buffer.clear()
 

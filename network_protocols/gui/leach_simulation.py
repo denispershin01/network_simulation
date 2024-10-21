@@ -39,10 +39,7 @@ class LeachSimulation(BaseSimulation):
 
                             if node.is_cluster_head:
                                 node.find_neighbors(nodes=cluster_neighbors)
-                                messages = node.receive_messages(nodes=cluster_neighbors, fpr=Config.FPR)
-
-                                for message in messages:
-                                    node.buffer.put(data=message)
+                                node.receive_messages(nodes=cluster_neighbors, fpr=Config.FPR)
 
             self._screen.fill("#1F1F1F")
             self._clock.tick(Config.FPS)

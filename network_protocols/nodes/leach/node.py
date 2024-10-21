@@ -1,7 +1,6 @@
 import logging
 import random
 
-from network_protocols.buffers.messages import Message
 from network_protocols.nodes.base import BaseLeachNode, BaseNodeProps
 from network_protocols.settings.config import Config
 
@@ -20,22 +19,20 @@ class LeachNode(BaseLeachNode):
                 self.neighbors.append(node)
 
     def receive_messages(self, nodes: list[BaseNodeProps], fpr: int = 5) -> None:
-        """Method which receives messages from the other nodes"""
-        result: list[Message] = list()
+        """Method which receives messages from the base nodes"""
+        if not self._is_cluster_head:
+            return
 
-        for node in nodes:
-            if node.is_cluster_head:
-                continue
-
+        for neighbor in self.neighbors:
             for _ in range(fpr):
-                message = node.buffer.pop()
+                message = neighbor.buffer.pop()
                 if message is None:
+                    logger.info("Buffer is empty for node %s", neighbor.oid)
                     break
-                result.append(message)
 
-                logger.info("Buffer length for node %s after sending: %s\n", self.oid, self.buffer.length)
+                self.buffer.put(message)
 
-        return result
+        logger.info("Buffer length for cluster head %s after receiving: %s\n", self.oid, self.buffer.length)
 
     def change_position(self, max_x: int, max_y: int) -> None:
         """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
