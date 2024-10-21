@@ -26,7 +26,7 @@ class LeachSimulation(BaseSimulation):
                 if event.type == pygame.KEYDOWN:
                     move_nodes(nodes=self._nodes, max_x=Config.SCREEN_WIDTH, max_y=Config.SCREEN_HEIGHT)
                     self._cluster_manager.initialize_clusters_state(nodes=self._nodes)
-                    self._nodes[2].is_cluster_head = True  # TODO: remove this (it was just for testing)
+                    self._cluster_manager.find_cluster_heads()
 
                     for node in self._nodes:
                         if isinstance(node, BaseLeachStation):

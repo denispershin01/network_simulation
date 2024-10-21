@@ -1,3 +1,4 @@
+import random
 from network_protocols.nodes.base import BaseLeachNode, BaseLeachStation, BaseNodeProps
 from network_protocols.settings.config import Config
 
@@ -12,6 +13,17 @@ class ClusterManager:
             3: [],
             4: [],
         }
+
+    def find_cluster_heads(self) -> None:
+        """Find a new cluster heads by the cluster state"""
+        # TODO: need to put specific formula here. But i'm lazy and it will be works by random.
+        for cluster_nodes in self.__clusters_state.values():
+            if len(cluster_nodes) > 0:
+                random_node = random.choice(cluster_nodes)
+                if random_node.is_cluster_head or random_node._energy <= 0:
+                    continue
+
+                random_node.is_cluster_head = True
 
     def initialize_clusters_state(self, nodes: list[BaseNodeProps]) -> None:
         """Initnialize clusters state. Before initnialization, nodes will be clear"""
@@ -43,4 +55,5 @@ class ClusterManager:
                 return cluster_id
 
     def get_nodes_by_cluster_index(self, cluster_index: int) -> list[BaseLeachNode]:
+        """Returns the nodes by the cluster index"""
         return self.__clusters_state[cluster_index]
