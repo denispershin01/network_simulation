@@ -1,17 +1,22 @@
 # Network Protocols
 
-Work in which you need to implement 3 algorithms for data communication in the network.
+* Read more about [flood algorithm](https://ecomputernotes.com/computernetworkingnotes/communication-networks/flooding)
 
-At the moment the implementation of the algorithm “Flood” is in progress.
+* Read more about [leach algorithm](https://en.wikipedia.org/wiki/Low-energy_adaptive_clustering_hierarchy)
+
+* Now working on a heuristic algorithm
+
 
 ## Requirements
 
-- [GNU Make](https://www.gnu.org/software/make/)
+* [GNU Make](https://www.gnu.org/software/make/)
+
+* [poetry](https://python-poetry.org/)
+
 
 ## How to Use
 
-1. **Clone the repository:**
-
+1. Clone the repository:
 ```bash
 git clone https://github.com/infast1k/network_protocols.git
 cd network_protocols
@@ -21,11 +26,13 @@ cd network_protocols
 
 3. Install all dependencies using `poetry install`
 
-4. Run `make app`
-
 
 ### Implemented Commands
 
-* `make app` - up application
+* `make flood` - run flood algorithm simulation
+
+* `make leach` - run leach algorithm simulation
+
+* command for run some heuristic algorithm will be added later
 
 * `make test` - run tests
