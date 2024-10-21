@@ -6,7 +6,13 @@ class LeachStation(BaseLeachStation):
         """Delete all packets from the buffer"""
         self.buffer.clear()
 
+    def receive_messages(self) -> None:
+        """Receive messages from the cluster head nodes"""
+        # TODO: implement this method
+        ...
+
     def find_neighbors(self, nodes: list[BaseLeachNode]) -> None:
+        """Find each cluster head nodes"""
         if len(self.neighbors) > 0:
             self.neighbors.clear()
 

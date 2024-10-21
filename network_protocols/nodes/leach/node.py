@@ -8,8 +8,9 @@ class LeachNode(BaseLeachNode):
         if not self._is_cluster_head:
             return
 
-        # TODO: need to find neighbors with HEAD_CLUSTER_NODE = True
-        return super().find_neighbors(nodes)
+        for node in nodes:
+            if isinstance(node, LeachNode) and not node.is_cluster_head:
+                self.neighbors.append(node)
 
     def receive_messages(self) -> None:
         ...
@@ -17,6 +18,7 @@ class LeachNode(BaseLeachNode):
     def change_position(self, max_x: int, max_y: int) -> None:
         """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
         self._energy -= 0.01
+        self._neighbors.clear()
 
         if self._energy <= 0:
             self._energy = 0

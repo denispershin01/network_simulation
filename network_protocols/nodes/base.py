@@ -41,7 +41,6 @@ class BaseNodeProps(ABC):
     def find_neighbors(self, nodes: list["BaseNodeProps"]) -> None:
         ...
 
-
 class BaseFloodNode(BaseNodeProps):
     @abstractmethod
     def change_position(self, max_x: int, max_y: int) -> None:
@@ -82,6 +81,10 @@ class BaseLeachNode(BaseNodeProps):
 
 
 class BaseLeachStation(BaseNodeProps):
+    @abstractmethod
+    def receive_messages(self) -> None:
+        ...
+
     @abstractmethod
     def clear_buffer(self) -> None:
         ...

@@ -30,6 +30,7 @@ class LeachSimulation(BaseSimulation):
                             node.receive_messages()
                         elif isinstance(node, BaseLeachStation):
                             node.find_neighbors(self._nodes)
+                            node.receive_messages()
                             node.clear_buffer()
 
             self._screen.fill("#1F1F1F")
