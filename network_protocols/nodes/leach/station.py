@@ -1,4 +1,11 @@
+import logging
+
 from network_protocols.nodes.base import BaseLeachNode, BaseLeachStation
+from network_protocols.settings.config import Config
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 
 class LeachStation(BaseLeachStation):
@@ -8,8 +15,20 @@ class LeachStation(BaseLeachStation):
 
     def receive_messages(self) -> None:
         """Receive messages from the cluster head nodes"""
-        # TODO: implement this method
-        ...
+        for node in self._neighbors:
+            if isinstance(node, BaseLeachStation):
+                continue
+
+            for _ in range(Config.FPR):
+                message = node.buffer.pop()
+                if message is None:
+                    break
+
+                self.buffer.put(message)
+
+            logger.info("Buffer length for cluster head %s after receiving: %s\n", node.oid, node.buffer.length)
+
+        self.buffer.clear()
 
     def find_neighbors(self, nodes: list[BaseLeachNode]) -> None:
         """Find each cluster head nodes"""
