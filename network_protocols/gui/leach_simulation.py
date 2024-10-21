@@ -2,7 +2,9 @@ import pygame
 
 from network_protocols.gui.base import BaseSimulation
 from network_protocols.nodes.base import BaseLeachNode, BaseNodeProps, BaseLeachStation
+from network_protocols.nodes.leach.manager import ClusterManager
 from network_protocols.settings.config import Config
+from network_protocols.utils.move import move_nodes
 
 
 class LeachSimulation(BaseSimulation):
@@ -10,6 +12,7 @@ class LeachSimulation(BaseSimulation):
         super().__init__(nodes)
         self._station_color: tuple[int, int, int] = (255, 255, 0)
         self._cluster_separetor_color: tuple[int, int, int] = (75, 112, 97)
+        self._cluster_manager: ClusterManager = ClusterManager()
 
     def start(self) -> None:
         """Starts the network simulation"""
@@ -21,17 +24,22 @@ class LeachSimulation(BaseSimulation):
                     self._is_running = False
 
                 if event.type == pygame.KEYDOWN:
+                    move_nodes(nodes=self._nodes, max_x=Config.SCREEN_WIDTH, max_y=Config.SCREEN_HEIGHT)
+                    self._cluster_manager.initialize_clusters_state(nodes=self._nodes)
+                    self._nodes[2].is_cluster_head = True  # TODO: remove this (it was just for testing)
+
                     for node in self._nodes:
-                        if isinstance(node, BaseLeachNode):
-                            node.change_position(max_x=Config.SCREEN_WIDTH, max_y=Config.SCREEN_HEIGHT)
-                        # TODO: expression for cluster head (receive messages)
-                        elif isinstance(node, BaseLeachNode) and node.is_cluster_head:
-                            node.find_neighbors(self._nodes)
-                            node.receive_messages()
-                        elif isinstance(node, BaseLeachStation):
+                        if isinstance(node, BaseLeachStation):
                             node.find_neighbors(self._nodes)
                             node.receive_messages()
                             node.clear_buffer()
+                        else:
+                            cluster_id = self._cluster_manager.get_cluster_id_by_node(node)
+                            cluster_neighbors = self._cluster_manager.get_nodes_by_cluster_index(cluster_id)
+
+                            if node.is_cluster_head:
+                                node.find_neighbors(nodes=cluster_neighbors)
+                                node.receive_messages()
 
             self._screen.fill("#1F1F1F")
             self._clock.tick(Config.FPS)

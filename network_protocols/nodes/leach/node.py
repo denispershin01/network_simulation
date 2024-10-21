@@ -19,12 +19,12 @@ class LeachNode(BaseLeachNode):
         """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
         self._energy -= 0.01
         self._neighbors.clear()
+        self._is_cluster_head = False
 
         if self._energy <= 0:
             self._energy = 0
             return
 
-        self._is_cluster_head = False
         self._radius = self._energy * Config.NODE_RADIUS
 
         self._pos_x += random.randint(-self._speed, self._speed)

@@ -39,10 +39,8 @@ def leach_initializer(max_nodes_count: int, gateways_count: int, max_packets: in
             pos_x=random.randint(0, Config.SCREEN_WIDTH),
             pos_y=random.randint(0, Config.SCREEN_HEIGHT),
             radius=100,
-        ) for _ in range(3)
+        ) for _ in range(10)
     ]
-
-    nodes[1].is_cluster_head = True
 
     nodes.append(
         LeachStation(

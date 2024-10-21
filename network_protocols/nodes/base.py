@@ -41,6 +41,7 @@ class BaseNodeProps(ABC):
     def find_neighbors(self, nodes: list["BaseNodeProps"]) -> None:
         ...
 
+
 class BaseFloodNode(BaseNodeProps):
     @abstractmethod
     def change_position(self, max_x: int, max_y: int) -> None:
