@@ -18,13 +18,15 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/infast1k/network_protocols.git
+git clone https://github.com/denispershin01/network_simulation.git
 cd network_protocols
 ```
 
 2. Install all required packages in `Requirements` section.
 
 3. Install all dependencies using `poetry install`
+
+4. Start a virtual environment `poetry shell`
 
 
 ### Implemented Commands
