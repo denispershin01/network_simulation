@@ -10,12 +10,12 @@ class Packet:
 
     @property
     def owner_oid(self) -> UUID:
-        """Returns the owner of the packet"""
+        """Возвращает владельца пакета"""
         return self._owner_oid
 
     @property
     def receivers(self) -> list[UUID]:
-        """Returns the receivers of the packet"""
+        """Возвращает получателей пакета"""
         return self._receivers
 
 
@@ -26,5 +26,5 @@ class Message:
 
     @property
     def packet(self) -> Packet:
-        """Returns the message data (packet)"""
+        """Возвращает данные сообщения (пакет)"""
         return self._data

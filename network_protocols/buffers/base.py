@@ -12,7 +12,7 @@ class BasePacket(ABC):
 
     @property
     def owner_oid(self) -> UUID:
-        """Returns the owner of the packet"""
+        """Возвращает владельца пакета"""
         return self._owner_oid
 
 
@@ -20,7 +20,7 @@ class BaseMessage(ABC, Generic[MT]):
     @property
     @abstractmethod
     def packet(self) -> MT:
-        """Returns the message data"""
+        """Возвращает данные сообщения"""
         ...
 
 

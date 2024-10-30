@@ -7,8 +7,9 @@ from network_protocols.settings.config import Config
 
 class FloodSimulation(BaseSimulation):
     def start(self) -> None:
-        """Starts the network simulation"""
+        """Запуск симуляции"""
         pygame.init()
+        pygame.display.set_caption('FloodSimulation')
 
         while self._is_running:
             for event in pygame.event.get():
@@ -18,7 +19,7 @@ class FloodSimulation(BaseSimulation):
                 if event.type == pygame.KEYDOWN:
                     for node in self._nodes:
                         if isinstance(node, BaseFloodNode):
-                            node.change_position(max_x=800, max_y=600)
+                            node.change_position(max_x=Config.SCREEN_WIDTH, max_y=Config.SCREEN_HEIGHT)
                             node.find_neighbors(self._nodes)
                             node.send_messages(fpr=Config.FPR)
                         else:
@@ -29,7 +30,7 @@ class FloodSimulation(BaseSimulation):
             self._clock.tick(Config.FPS)
 
             self._draw_text_on_center(
-                text="Press any key to move nodes...",
+                text="Нажми что-нибудь, пожалуйста...",
                 screen_width=Config.SCREEN_WIDTH,
                 y_pos=25,
             )

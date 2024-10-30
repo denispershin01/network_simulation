@@ -11,7 +11,7 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 class FloodNode(BaseFloodNode):
     def send_messages(self, fpr: int = 5) -> None:
-        """Sends the messages to the neighbors. Fpr is the constraint for the number of messages per round."""
+        """Отправляет сообщения соседям. Fpr - это ограничение на количество сообщений за раунд."""
         for _ in range(fpr):
             message = self.buffer.pop()
             if message is None:
@@ -25,8 +25,8 @@ class FloodNode(BaseFloodNode):
 
     def find_neighbors(self, nodes: list[BaseNodeProps]) -> None:
         """
-        Finds the neighbors of the current node.
-        Before finding neighbors, it clears the list of neighbors.
+        Находит соседей текущего узла.
+        Перед поиском соседей он очищает список соседей.
         """
         if len(self._neighbors) > 0:
             self._neighbors.clear()
@@ -45,7 +45,7 @@ class FloodNode(BaseFloodNode):
                 self._neighbors.append(neighbor)
 
     def change_position(self, max_x: int, max_y: int) -> None:
-        """Changes the position of the current node. Energy is decreased by 0.1 on each move."""
+        """Изменяет положение текущего узла. Количество энергии уменьшается на 0,1 при каждом перемещении."""
         self._energy -= 0.01
 
         if self._energy <= 0:
@@ -60,7 +60,7 @@ class FloodNode(BaseFloodNode):
         self._validate_new_position(max_x=max_x, max_y=max_y)
 
     def _validate_new_position(self, max_x: int, max_y: int) -> None:
-        """Validates the new position of the current node"""
+        """Проверяет новое положение текущего узла."""
         if self._pos_x < 0:
             self._pos_x = 0
         elif self._pos_x > max_x:

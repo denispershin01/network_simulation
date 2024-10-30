@@ -4,8 +4,8 @@ from network_protocols.nodes.base import BaseFloodGateway, BaseNodeProps
 class FloodGateway(BaseFloodGateway):
     def find_neighbors(self, nodes: list[BaseNodeProps]) -> None:
         """
-        Finds the neighbors of the current node.
-        Before finding neighbors, it clears the list of neighbors.
+        Находит соседей текущего узла.
+        Перед поиском соседей он очищает список соседей.
         """
         if len(self._neighbors) > 0:
             self._neighbors.clear()
@@ -24,5 +24,5 @@ class FloodGateway(BaseFloodGateway):
                 self._neighbors.append(neighbor)
 
     def clear_buffer(self) -> None:
-        """Clears the buffer"""
+        """Очищение буфера"""
         self.buffer.clear()

@@ -15,7 +15,7 @@ class ClusterManager:
         }
 
     def find_cluster_heads(self) -> None:
-        """Find a new cluster heads by the cluster state"""
+        """Поиск нового кластера, возглавляемого по состоянию кластера"""
         # TODO: need to put specific formula here. But i'm lazy and it will be works by random.
         for cluster_nodes in self.__clusters_state.values():
             if len(cluster_nodes) > 0:
@@ -26,7 +26,7 @@ class ClusterManager:
                 random_node.is_cluster_head = True
 
     def initialize_clusters_state(self, nodes: list[BaseNodeProps]) -> None:
-        """Initnialize clusters state. Before initnialization, nodes will be clear"""
+        """Инициализация состояния кластеров. Перед инициализацией узлы будут очищены"""
         for cluster_nodes in self.__clusters_state.values():
             cluster_nodes.clear()
 
@@ -46,7 +46,7 @@ class ClusterManager:
                     self.__clusters_state[4].append(node)
 
     def get_cluster_id_by_node(self, node: BaseLeachNode) -> int:
-        """Returns the cluster_id by the node"""
+        """Возвращает cluster_id узла"""
         if isinstance(node, BaseLeachStation):
             return 0
 
@@ -55,5 +55,5 @@ class ClusterManager:
                 return cluster_id
 
     def get_nodes_by_cluster_index(self, cluster_index: int) -> list[BaseLeachNode]:
-        """Returns the nodes by the cluster index"""
+        """Возвращает узел по индексу"""
         return self.__clusters_state[cluster_index]

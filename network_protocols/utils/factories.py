@@ -2,7 +2,7 @@ import random
 from network_protocols.buffers.messages import Message, Packet
 from network_protocols.nodes.base import BaseFloodGateway, BaseFloodNode, BaseNodeProps, BaseLeachStation
 from network_protocols.nodes.flood.node import FloodNode
-from network_protocols.nodes.flood.gateway import FloodGateway
+from network_protocols.nodes.flood.gateway import FloodGateway #ШЛЮЗ
 from network_protocols.nodes.leach.node import LeachNode
 from network_protocols.nodes.leach.station import LeachStation
 from network_protocols.settings.config import Config

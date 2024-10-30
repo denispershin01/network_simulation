@@ -15,8 +15,9 @@ class LeachSimulation(BaseSimulation):
         self._cluster_manager: ClusterManager = ClusterManager()
 
     def start(self) -> None:
-        """Starts the network simulation"""
+        """Запуск симуляции"""
         pygame.init()
+        pygame.display.set_caption('LeachSimulation')
 
         while self._is_running:
             for event in pygame.event.get():
@@ -46,7 +47,7 @@ class LeachSimulation(BaseSimulation):
             self._separate_clusters()
 
             self._draw_text_on_center(
-                text="Press any key to move nodes...",
+                text="Нажми что-нибудь, пожалуйста...",
                 screen_width=Config.SCREEN_WIDTH,
                 y_pos=25,
             )
@@ -57,7 +58,7 @@ class LeachSimulation(BaseSimulation):
         pygame.quit()
 
     def _separate_clusters(self) -> None:
-        """Draw lines which separate clusters"""
+        """Отрисовка линий, разделяющие кластеры"""
         pygame.draw.line(
             surface=self._screen,
             color=self._cluster_separetor_color,
@@ -74,28 +75,4 @@ class LeachSimulation(BaseSimulation):
             width=2,
         )
 
-    def _draw_nodes(self) -> None:
-        """Draws the nodes and lines between neighbors"""
-        for node in self._nodes:
-            if isinstance(node, BaseLeachNode) and not node.is_cluster_head:
-                color = self._node_color
-            elif isinstance(node, BaseLeachNode) and node.is_cluster_head:
-                color = self._gateway_color
-            elif isinstance(node, BaseLeachStation):
-                color = self._station_color
-
-            pygame.draw.circle(
-                surface=self._screen,
-                color=color,
-                center=node.coordinates,
-                radius=6,
-            )
-
-            for neighbor in node.neighbors:
-                pygame.draw.line(
-                    surface=self._screen,
-                    color=self._line_color,
-                    start_pos=node.coordinates,
-                    end_pos=neighbor.coordinates,
-                    width=2,
-                )
+   

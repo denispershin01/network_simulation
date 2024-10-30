@@ -44,4 +44,4 @@ if __name__ == "__main__":
             case _:
                 raise IndexError
     except IndexError:
-        logger.warning("Missing argument. Please provide the argument for specifying the simulation algorithm.")
+        logger.warning("Блин, прости, я не понял что ты от меня хочешь. Попробуй еще раз.")

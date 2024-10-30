@@ -19,22 +19,22 @@ class BaseNodeProps(ABC):
 
     @property
     def oid(self) -> UUID:
-        """Returns the unique id of the current node"""
+        """Возвращает уникальный идентификатор текущего узла"""
         return self._oid
 
     @property
     def neighbors(self) -> list["BaseNodeProps"]:
-        """Returns the neighbors of the current node"""
+        """Возвращает соседей текущего узла"""
         return self._neighbors
 
     @property
     def buffer(self) -> BaseBuffer:
-        """Returns the buffer of the current node"""
+        """Возвращает буфер текущего узла"""
         return self._buffer
 
     @property
     def coordinates(self) -> tuple[int, int]:
-        """Returns the coordinates of the current node"""
+        """Возвращает координаты текущего узла"""
         return self._pos_x, self._pos_y
 
     @abstractmethod
@@ -65,7 +65,7 @@ class BaseLeachNode(BaseNodeProps):
 
     @property
     def is_cluster_head(self) -> bool:
-        """Returns True if the current node is cluster head. Else returns False"""
+        """Возвращает значение True, если текущий узел является главным в кластере. Else возвращает значение False"""
         return self._is_cluster_head
 
     @is_cluster_head.setter

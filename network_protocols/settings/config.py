@@ -2,8 +2,8 @@ from typing import Final
 
 
 class Config:
-    SCREEN_WIDTH: Final[int] = 800
-    SCREEN_HEIGHT: Final[int] = 600
+    SCREEN_WIDTH: Final[int] = 1024
+    SCREEN_HEIGHT: Final[int] = 768
     FPS: Final[int] = 60
     FPR: Final[int] = 10
     MAX_PACKETS: Final[int] = 3

@@ -29,7 +29,7 @@ class Queue(BaseBuffer):
         return data
 
     def clear(self) -> None:
-        """Clears the buffer"""
+        """Очищает буфер"""
         self.head = None
         self.tail = None
 

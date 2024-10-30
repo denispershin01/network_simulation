@@ -10,11 +10,11 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 class LeachStation(BaseLeachStation):
     def clear_buffer(self) -> None:
-        """Delete all packets from the buffer"""
+        """Удаление пакетов из буфера"""
         self.buffer.clear()
 
     def receive_messages(self) -> None:
-        """Receive messages from the cluster head nodes"""
+        """Получить сообщения от головных узлов кластера"""
         for node in self._neighbors:
             if isinstance(node, BaseLeachStation):
                 continue
@@ -31,7 +31,7 @@ class LeachStation(BaseLeachStation):
         self.buffer.clear()
 
     def find_neighbors(self, nodes: list[BaseLeachNode]) -> None:
-        """Find each cluster head nodes"""
+        """Поиск головных узлов каждого кластера"""
         if len(self.neighbors) > 0:
             self.neighbors.clear()
 
