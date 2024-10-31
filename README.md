@@ -4,7 +4,7 @@
 
 * Read more about [leach algorithm](https://en.wikipedia.org/wiki/Low-energy_adaptive_clustering_hierarchy)
 
-* Now working on a heuristic algorithm
+* Read more about [ACO algorithm](https://blog.bullgare.com/wp-content/uploads/2019/05/aca.pdf)
 
 
 ## Requirements
@@ -18,13 +18,15 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/infast1k/network_protocols.git
+git clone https://github.com/denispershin01/network_simulation.git
 cd network_protocols
 ```
 
 2. Install all required packages in `Requirements` section.
 
 3. Install all dependencies using `poetry install`
+
+4. Start a virtual environment `poetry shell`
 
 
 ### Implemented Commands
@@ -33,6 +35,5 @@ cd network_protocols
 
 * `make leach` - run leach algorithm simulation
 
-* command for run some heuristic algorithm will be added later
+* `make aco` - run ACO algorithm simulation
 
-* `make test` - run tests
