@@ -11,7 +11,7 @@ class BaseNodeProps(ABC):
         self._oid: UUID = uuid4()
         self._pos_x: int = pos_x
         self._pos_y: int = pos_y
-        self._speed: int = Config.NODE_SPEED
+        self._speed: int = Config.NOISE_SIZE
         self._energy: int = Config.NODE_ENERGY
         self._radius: int = radius * self._energy
         self._neighbors: list["BaseNodeProps"] = list()
@@ -65,7 +65,7 @@ class BaseLeachNode(BaseNodeProps):
 
     @property
     def is_cluster_head(self) -> bool:
-        """Возвращает значение True, если текущий узел является главным в кластере. Else возвращает значение False"""
+        """Возвращает значение True, если текущий узел является главным в кластере. Иначе возвращает значение False"""
         return self._is_cluster_head
 
     @is_cluster_head.setter
@@ -85,6 +85,39 @@ class BaseLeachStation(BaseNodeProps):
     @abstractmethod
     def receive_messages(self) -> None:
         ...
+
+    @abstractmethod
+    def clear_buffer(self) -> None:
+        ...
+
+
+class BaseACONode(BaseNodeProps):
+    def __init__(self, pos_x: int, pos_y: int, radius: int = Config.NODE_RADIUS) -> None:
+        super().__init__(pos_x, pos_y, radius)
+        self._pheromones_bag: float = 0
+
+    @property
+    def pheromones_bag(self) -> float:
+        """Возвращает концентрацию(значение) феромонов на текущем узле."""
+        return self._pheromones_bag
+
+    @pheromones_bag.setter
+    def pheromones_bag(self, value: float) -> None:
+        self._pheromones_bag = value
+
+    @abstractmethod
+    def change_position(self, max_x: int, max_y: int) -> None:
+        ...
+
+    @abstractmethod
+    def send_messages(self, fpr: int) -> None:
+        ...
+
+
+class BaseACOGateway(BaseNodeProps):
+    def __init__(self, pos_x: int, pos_y: int, radius: int = Config.NODE_RADIUS) -> None:
+        super().__init__(pos_x, pos_y, radius)
+        self._pheromones_bag: float = 0
 
     @abstractmethod
     def clear_buffer(self) -> None:

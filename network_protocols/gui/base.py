@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import pygame
 
-from network_protocols.nodes.base import BaseFloodNode, BaseNodeProps
+from network_protocols.nodes.base import BaseFloodNode, BaseNodeProps, BaseACONode, BaseACOGateway, BaseFloodGateway
 from network_protocols.settings.config import Config
 from network_protocols.nodes.base import BaseLeachNode, BaseNodeProps, BaseLeachStation
 
@@ -16,6 +16,7 @@ class BaseSimulation(ABC):
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._is_running: bool = True
         self._node_color: tuple[int, int, int] = (255, 255, 255)
+        self._radius_color: tuple[int, int, int] = (66, 66, 66)
         self._gateway_color: tuple[int, int, int] = (255, 0, 0)
         self._line_color: tuple[int, int, int] = (255, 255, 255)
 
@@ -24,7 +25,18 @@ class BaseSimulation(ABC):
         ...
 
     def _draw_nodes(self) -> None:
-        """Отрисовка узлов и линий между соседними объектами"""
+        """Отрисовка радиусов узлов"""
+        for node in self._nodes:
+            if (node._energy > 0):
+                if not isinstance(node,(BaseACOGateway,BaseFloodGateway)):
+                    pygame.draw.circle(
+                        self._screen,
+                        self._radius_color,
+                        node.coordinates,
+                        node._radius,
+                        1
+                    )
+        """Отрисовка узлов и линий между соседними объектами"""            
         for node in self._nodes:
 
             if isinstance(node, BaseLeachNode) and not node.is_cluster_head:
@@ -34,41 +46,51 @@ class BaseSimulation(ABC):
             elif isinstance(node, BaseLeachStation):
                 color = self._station_color
 
-            elif isinstance(node, BaseFloodNode):
+            elif isinstance(node, (BaseFloodNode,BaseACONode)):
                 color = self._node_color
             else:
                 color = self._gateway_color
 
             if (node._energy > 0):
+
+                for neighbor in node.neighbors:
+                    if isinstance(neighbor, (BaseACONode, BaseACOGateway)):
+                        if not isinstance(node, BaseACOGateway):
+                            pygame.draw.line(
+                            surface=self._screen,
+                            color=self._line_color,
+                            start_pos=node.coordinates,
+                            end_pos=neighbor.coordinates,
+                            width = 1 + int(neighbor._pheromones_bag),
+                            )
+                    else:
+                        pygame.draw.line(
+                            surface=self._screen,
+                            color=self._line_color,
+                            start_pos=node.coordinates,
+                            end_pos=neighbor.coordinates,
+                            width=2,
+                        )
                 pygame.draw.circle(
                     surface=self._screen,
                     color=color,
                     center=node.coordinates,
                     radius=6,
                 )
-
-                for neighbor in node.neighbors:
-                    pygame.draw.line(
-                        surface=self._screen,
-                        color=self._line_color,
-                        start_pos=node.coordinates,
-                        end_pos=neighbor.coordinates,
-                        width=2,
-                    )
             else:
                 pygame.draw.line(
                     self._screen,
                     color,
-                    [node.coordinates[0] - 6,node.coordinates[1] + 6],
-                    [node.coordinates[0] + 6,node.coordinates[1] - 6],
-                    4
+                    [node.coordinates[0] - 5,node.coordinates[1] + 5],
+                    [node.coordinates[0] + 5,node.coordinates[1] - 5],
+                    2
                 )
                 pygame.draw.line(
                     self._screen,
                     color,
-                    [node.coordinates[0] - 6,node.coordinates[1] - 6],
-                    [node.coordinates[0] + 6,node.coordinates[1] + 6],
-                    4
+                    [node.coordinates[0] - 5,node.coordinates[1] - 5],
+                    [node.coordinates[0] + 5,node.coordinates[1] + 5],
+                    2
                 )
 
     def _draw_text_on_center(self, text: str, screen_width: int, y_pos: int) -> None:

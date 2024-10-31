@@ -31,6 +31,13 @@ class LeachNode(BaseLeachNode):
                     break
 
                 self.buffer.put(message)
+                
+                ###За каждое съеденое сообщение узел расплачивается своей энергией#
+                self._energy -= 0.01
+                if self._energy <= 0:
+                    self._energy = 0
+                    return
+                ###
 
         logger.info("Buffer length for cluster head %s after receiving: %s\n", self.oid, self.buffer.length)
 

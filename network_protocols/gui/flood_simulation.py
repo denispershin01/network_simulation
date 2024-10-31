@@ -29,12 +29,13 @@ class FloodSimulation(BaseSimulation):
             self._screen.fill("#1F1F1F")
             self._clock.tick(Config.FPS)
 
+            
+            self._draw_nodes()
             self._draw_text_on_center(
                 text="Нажми что-нибудь, пожалуйста...",
                 screen_width=Config.SCREEN_WIDTH,
                 y_pos=25,
             )
-            self._draw_nodes()
 
             pygame.display.flip()
 
