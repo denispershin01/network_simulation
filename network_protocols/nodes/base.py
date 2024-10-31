@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from uuid import UUID, uuid4
 
 from network_protocols.buffers.base import BaseBuffer
+from network_protocols.buffers.pheromones import Pheromone
 from network_protocols.buffers.queue import Queue
 from network_protocols.settings.config import Config
 
@@ -94,16 +95,34 @@ class BaseLeachStation(BaseNodeProps):
 class BaseACONode(BaseNodeProps):
     def __init__(self, pos_x: int, pos_y: int, radius: int = Config.NODE_RADIUS) -> None:
         super().__init__(pos_x, pos_y, radius)
-        self._pheromones_bag: float = 0
+        self._pheromones_bag: list["Pheromone"] = []
 
     @property
-    def pheromones_bag(self) -> float:
-        """Возвращает концентрацию(значение) феромонов на текущем узле."""
+    def pheromones_bag(self) -> list["Pheromone"]:
+        """Возвращает концентрацию(список) феромонов на текущем узле."""
         return self._pheromones_bag
 
     @pheromones_bag.setter
-    def pheromones_bag(self, value: float) -> None:
+    def pheromones_bag(self, value: list["Pheromone"]) -> None:
         self._pheromones_bag = value
+
+    #@property
+    def pheromones_value(self, unwanted_oid: UUID = None) -> float:
+        value: float = 0
+        for p in self.pheromones_bag:
+                if p._oid == unwanted_oid:
+                    return 0
+                else:
+                    value += p.value
+        return value
+    
+    def pheromones_dispersion(self,dispersion_coefficient: float = 1,)-> None:
+        for p in self._pheromones_bag:
+            if p.value < 0.01:
+                self._pheromones_bag.remove(p)
+            else:
+                p.value *= dispersion_coefficient 
+
 
     @abstractmethod
     def change_position(self, max_x: int, max_y: int) -> None:
@@ -117,7 +136,33 @@ class BaseACONode(BaseNodeProps):
 class BaseACOGateway(BaseNodeProps):
     def __init__(self, pos_x: int, pos_y: int, radius: int = Config.NODE_RADIUS) -> None:
         super().__init__(pos_x, pos_y, radius)
-        self._pheromones_bag: float = 0
+        self._pheromones_bag: list["Pheromone"] = []
+
+    @property
+    def pheromones_bag(self) -> list["Pheromone"]:
+        """Возвращает концентрацию(список) феромонов на текущем узле."""
+        return self._pheromones_bag
+
+    @pheromones_bag.setter
+    def pheromones_bag(self, value: list["Pheromone"]) -> None:
+        self._pheromones_bag = value
+
+    #@property
+    def pheromones_value(self, unwanted_oid: UUID = None) -> float:
+        value: float = 0
+        for p in self.pheromones_bag:
+                if p._oid == unwanted_oid:
+                    return 0
+                else:
+                    value += p.value
+        return value
+    
+    def pheromones_dispersion(self,dispersion_coefficient: float = 1,)-> None:
+        for p in self._pheromones_bag:
+            if p.value < 0.01:
+                self._pheromones_bag.remove(p)
+            else:
+                p.value *= dispersion_coefficient 
 
     @abstractmethod
     def clear_buffer(self) -> None:

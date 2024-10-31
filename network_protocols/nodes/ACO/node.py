@@ -4,7 +4,7 @@ import math
 
 from network_protocols.nodes.base import BaseACONode, BaseNodeProps
 from network_protocols.settings.config import Config
-
+from network_protocols.buffers.pheromones import Pheromone
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
@@ -14,7 +14,7 @@ class ACONode(BaseACONode):
         """Выбирает привлекательного соседа и отправляет к нему муровья(сообщение)"""
         message = self.buffer.pop()
         if (message is not None) & (len(self.neighbors)>0):
-            pheromones = [n._pheromones_bag for n in self.neighbors]
+            pheromones = [n.pheromones_value(unwanted_oid=message.packet.owner_oid) for n in self.neighbors]
             selected_neighbor : BaseNodeProps
             if max(pheromones) <= 0:
                 selected_neighbor = random.choice(self.neighbors) 
@@ -23,10 +23,9 @@ class ACONode(BaseACONode):
                 probabilities = [val/sum(exp_values) for val in exp_values]
                 selected_neighbor = random.choices(self.neighbors,weights = probabilities, k=1)[0]
 
-            if selected_neighbor.oid != message.packet.owner_oid:
-                    selected_neighbor.buffer.put(message)
-                    selected_neighbor._pheromones_bag += 0.1 #Сразу источаем феромоны
-                    self._energy -= 0.01
+            selected_neighbor.buffer.put(message)
+            selected_neighbor._pheromones_bag.append(Pheromone(owner_oid=message.packet.owner_oid))
+            self._energy -= 0.01
     
     def send_messages(self, fpr: int = 5) -> None:
         """Отправляет сообщения соседям. Fpr - это ограничение на количество сообщений за раунд."""
@@ -60,7 +59,7 @@ class ACONode(BaseACONode):
     def change_position(self, max_x: int, max_y: int) -> None:
         """Изменяет положение текущего узла. Количество энергии уменьшается на 0,1 при каждом перемещении."""
         self._energy -= 0.01
-        self.pheromones_bag -= 0.05 #испарение феромона
+        self.pheromones_dispersion(0.6) #испарение феромона
 
         if self._energy <= 0:
             self._energy = 0

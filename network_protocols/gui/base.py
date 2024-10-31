@@ -61,7 +61,7 @@ class BaseSimulation(ABC):
                             color=self._line_color,
                             start_pos=node.coordinates,
                             end_pos=neighbor.coordinates,
-                            width = 1 + int(neighbor._pheromones_bag),
+                            width = 1 + int(neighbor.pheromones_value()),
                             )
                     else:
                         pygame.draw.line(
