@@ -59,7 +59,8 @@ class FloodNode(BaseFloodNode):
             self._energy = 0
             return
 
-        self._radius = self._energy * Config.NODE_RADIUS
+        if(self._radius > Config.NODE_RADIUS):
+            self._radius = Config.NODE_RADIUS
 
         self._pos_x += random.randint(-self._speed, self._speed)
         self._pos_y += random.randint(-self._speed, self._speed)

@@ -1,7 +1,7 @@
 import pygame
 
 from network_protocols.gui.base import BaseSimulation
-from network_protocols.nodes.base import BaseFloodNode
+from network_protocols.nodes.base import BaseFloodNode, BaseFloodGateway
 from network_protocols.settings.config import Config
 
 

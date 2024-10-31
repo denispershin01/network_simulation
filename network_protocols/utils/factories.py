@@ -15,6 +15,7 @@ def flood_initializer(max_nodes_count: int, gateways_count: int, max_packets: in
         FloodNode(
             pos_x=random.randint(0, Config.SCREEN_WIDTH),
             pos_y=random.randint(0, Config.SCREEN_HEIGHT),
+            radius=Config.NODE_RADIUS
         ) for _ in range(max_nodes_count)
     ]
 
@@ -22,6 +23,7 @@ def flood_initializer(max_nodes_count: int, gateways_count: int, max_packets: in
         FloodGateway(
             pos_x=random.randint(0, Config.SCREEN_WIDTH),
             pos_y=random.randint(0, Config.SCREEN_HEIGHT),
+            radius=Config.NODE_RADIUS
         ) for _ in range(gateways_count)
     )
 

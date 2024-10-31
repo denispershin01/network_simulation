@@ -51,7 +51,8 @@ class LeachNode(BaseLeachNode):
             self._energy = 0
             return
 
-        self._radius = self._energy * Config.NODE_RADIUS
+        if(self._radius > Config.NODE_RADIUS):
+            self._radius = Config.NODE_RADIUS
 
         ###ограничение на кластеры###
         min_x = 0

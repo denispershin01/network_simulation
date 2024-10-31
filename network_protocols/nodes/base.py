@@ -130,6 +130,10 @@ class BaseACONode(BaseNodeProps):
 
     @abstractmethod
     def send_messages(self, fpr: int) -> None:
+        
+        ...
+    @abstractmethod
+    def send_ant(self) -> None:
         ...
 
 
